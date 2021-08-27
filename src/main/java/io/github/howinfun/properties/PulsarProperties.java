@@ -1,4 +1,4 @@
-package com.github.howinfun.properties;
+package io.github.howinfun.properties;
 
 import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

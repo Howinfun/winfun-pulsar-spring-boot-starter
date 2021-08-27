@@ -1,4 +1,4 @@
-package com.github.howinfun.ececption;
+package io.github.howinfun.ececption;
 
 /**
  * 自定义Pulsar异常

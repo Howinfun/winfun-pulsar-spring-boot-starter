@@ -1,11 +1,11 @@
-package com.github.howinfun.configuration;
+package io.github.howinfun.configuration;
 
 import cn.hutool.core.util.RandomUtil;
-import com.github.howinfun.ececption.PulsarAutoConfigException;
-import com.github.howinfun.listener.BaseMessageListener;
-import com.github.howinfun.listener.PulsarListener;
-import com.github.howinfun.properties.PulsarProperties;
-import com.github.howinfun.utils.TopicUtil;
+import io.github.howinfun.ececption.PulsarAutoConfigException;
+import io.github.howinfun.listener.BaseMessageListener;
+import io.github.howinfun.listener.PulsarListener;
+import io.github.howinfun.properties.PulsarProperties;
+import io.github.howinfun.utils.TopicUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +67,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                              * 处理topics
                              */
                             for (String topic : pulsarListener.topics()) {
-                                topics.add(TopicUtil.generateTopic(persistent,tenant,namespace,topic));
+                                topics.add(TopicUtil.generateTopic(persistent, tenant, namespace, topic));
                             }
                             consumerBuilder.topics(topics);
                             /**

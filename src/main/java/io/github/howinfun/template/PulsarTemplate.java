@@ -1,8 +1,8 @@
-package com.github.howinfun.template;
+package io.github.howinfun.template;
 
-import com.github.howinfun.ececption.PulsarBusinessException;
-import com.github.howinfun.properties.PulsarProperties;
-import com.github.howinfun.utils.TopicUtil;
+import io.github.howinfun.ececption.PulsarBusinessException;
+import io.github.howinfun.properties.PulsarProperties;
+import io.github.howinfun.utils.TopicUtil;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -132,7 +132,7 @@ public class PulsarTemplate {
             String finalTenant = StringUtils.isNotBlank(this.tenant)?this.tenant:PulsarTemplate.this.properties.getTenant();
             String finalNamespace = StringUtils.isNotBlank(this.namespace)?this.namespace:PulsarTemplate.this.properties.getNamespace();
             Boolean finalPersistent = Objects.nonNull(this.persistent)?this.persistent:Boolean.TRUE;
-            return TopicUtil.generateTopic(finalPersistent,finalTenant,finalNamespace,this.topic);
+            return TopicUtil.generateTopic(finalPersistent, finalTenant, finalNamespace, this.topic);
         }
 
     }

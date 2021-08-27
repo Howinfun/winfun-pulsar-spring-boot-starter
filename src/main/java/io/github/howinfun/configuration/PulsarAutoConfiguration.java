@@ -1,8 +1,8 @@
-package com.github.howinfun.configuration;
+package io.github.howinfun.configuration;
 
-import com.github.howinfun.ececption.PulsarAutoConfigException;
-import com.github.howinfun.properties.PulsarProperties;
-import com.github.howinfun.template.PulsarTemplate;
+import io.github.howinfun.ececption.PulsarAutoConfigException;
+import io.github.howinfun.properties.PulsarProperties;
+import io.github.howinfun.template.PulsarTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
@@ -36,7 +36,7 @@ public class PulsarAutoConfiguration {
             return PulsarClient.builder().serviceUrl(pulsarProperties.getServiceUrl()).listenerThreads(pulsarProperties.getListenerThreads()).build();
         } catch (PulsarClientException e) {
             log.error("[Pulsar] 客户端实例化失败！");
-            throw new PulsarAutoConfigException("[Pulsar] 客户端实例化失败！",e);
+            throw new PulsarAutoConfigException("[Pulsar] 客户端实例化失败！", e);
         }
     }
 

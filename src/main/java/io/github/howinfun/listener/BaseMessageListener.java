@@ -1,4 +1,4 @@
-package com.github.howinfun.listener;
+package io.github.howinfun.listener;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;

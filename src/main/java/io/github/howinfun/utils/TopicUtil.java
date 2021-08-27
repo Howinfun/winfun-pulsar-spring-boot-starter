@@ -1,12 +1,9 @@
-package com.github.howinfun.utils;
+package io.github.howinfun.utils;
 
+import io.github.howinfun.constant.PulsarConstant;
 import java.util.StringJoiner;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import static com.github.howinfun.constant.PulsarConstant.NON_PERSISTENT;
-import static com.github.howinfun.constant.PulsarConstant.PATH_SPLIT;
-import static com.github.howinfun.constant.PulsarConstant.PERSISTENT;
 
 /**
  * 主题工具类
@@ -22,12 +19,12 @@ public final class TopicUtil {
      */
     public static String generateTopic(@NotNull Boolean persistent, @NotBlank String tenant, @NotBlank String namespace, @NotBlank String topic){
 
-        StringJoiner stringJoiner = new StringJoiner(PATH_SPLIT);
+        StringJoiner stringJoiner = new StringJoiner(PulsarConstant.PATH_SPLIT);
         stringJoiner.add(tenant).add(namespace).add(topic);
         if (Boolean.TRUE.equals(persistent)){
-            return PERSISTENT + stringJoiner.toString();
+            return PulsarConstant.PERSISTENT + stringJoiner.toString();
         }else {
-            return NON_PERSISTENT + stringJoiner.toString();
+            return PulsarConstant.NON_PERSISTENT + stringJoiner.toString();
         }
     }
 }

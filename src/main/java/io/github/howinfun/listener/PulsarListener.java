@@ -1,4 +1,4 @@
-package com.github.howinfun.listener;
+package io.github.howinfun.listener;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

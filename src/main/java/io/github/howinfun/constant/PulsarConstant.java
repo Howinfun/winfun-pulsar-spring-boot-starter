@@ -1,4 +1,4 @@
-package com.github.howinfun.constant;
+package io.github.howinfun.constant;
 
 /**
  * pulsar常量

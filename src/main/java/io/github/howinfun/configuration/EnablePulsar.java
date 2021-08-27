@@ -1,4 +1,4 @@
-package com.github.howinfun.configuration;
+package io.github.howinfun.configuration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
