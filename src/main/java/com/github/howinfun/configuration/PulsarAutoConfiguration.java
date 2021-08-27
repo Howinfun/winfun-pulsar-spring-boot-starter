@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * pulsar 自动配置
  * @author winfun
- * @date 2021/8/20 4:36 下午
  **/
 @Slf4j
 @Configuration

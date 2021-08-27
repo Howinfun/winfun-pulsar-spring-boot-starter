@@ -17,7 +17,6 @@ import org.apache.pulsar.client.api.MessageListener;
  * 自动配置会根据@PulsarListener的信息进行consumer的初始化
  * 支持线程池异步消费消息
  * @author winfun
- * @date 2021/8/20 4:42 下午
  **/
 @Slf4j
 public abstract class BaseMessageListener implements MessageListener<String> {

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  * 自定义注解
  * 初始化consumer的配置参数
  * @author winfun
- * @date 2021/8/20 4:36 下午
  **/
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

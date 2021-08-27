@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 /**
  * Pulsar配置类
  * @author winfun
- * @date 2021/8/20 4:55 下午
  **/
 @Data
 @Component

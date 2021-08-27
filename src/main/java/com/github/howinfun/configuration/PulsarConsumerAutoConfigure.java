@@ -27,7 +27,6 @@ import org.springframework.util.CollectionUtils;
 /**
  * 消费者自动初始化
  * @author winfun
- * @date 2021/8/27 10:40 上午
  **/
 @Slf4j
 public class PulsarConsumerAutoConfigure implements CommandLineRunner {

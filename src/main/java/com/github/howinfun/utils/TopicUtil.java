@@ -11,7 +11,6 @@ import static com.github.howinfun.constant.PulsarConstant.PERSISTENT;
 /**
  * 主题工具类
  * @author winfun
- * @date 2021/8/27 10:58 上午
  **/
 public final class TopicUtil {
 

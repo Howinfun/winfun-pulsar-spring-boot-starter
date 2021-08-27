@@ -18,7 +18,6 @@ import org.apache.pulsar.shade.org.apache.commons.lang.StringUtils;
 /**
  * Pulsar Producer Template
  * @author winfun
- * @date 2021/8/25 1:49 下午
  **/
 @Slf4j
 public class PulsarTemplate {

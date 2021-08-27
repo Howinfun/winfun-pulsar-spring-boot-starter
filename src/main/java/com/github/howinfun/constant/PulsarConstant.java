@@ -3,7 +3,6 @@ package com.github.howinfun.constant;
 /**
  * pulsar常量
  * @author winfun
- * @date 2021/8/26 9:58 上午
  **/
 public final class PulsarConstant {
 

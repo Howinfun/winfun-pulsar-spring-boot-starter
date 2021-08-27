@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 /**
  * 开启pulsar自动配置，包括Producer和Consumer
  * @author winfun
- * @date 2021/8/20 4:36 下午
  **/
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
