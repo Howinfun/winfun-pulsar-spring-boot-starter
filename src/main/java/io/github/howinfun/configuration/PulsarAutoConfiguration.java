@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Slf4j
 @Configuration
-@ComponentScan("com.github.howinfun")
+@ComponentScan("io.github.howinfun")
 @ConditionalOnExpression("!'${pulsar.serviceUrl}'.isEmpty()")
 public class PulsarAutoConfiguration {
 
