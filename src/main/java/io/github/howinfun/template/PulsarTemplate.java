@@ -93,7 +93,9 @@ public class PulsarTemplate {
          */
         public MessageId send(String msg) throws Exception{
             try {
-                return this.sendAsync(msg).get();
+                MessageId messageId = this.sendAsync(msg).get();
+                log.info("[Pulsar] Producer同步发送消息失败，msg is {}",msg);
+                return messageId;
             } catch (InterruptedException | ExecutionException e) {
                 log.error("[Pulsar] Producer同步发送消息失败，msg is {}",msg);
                 throw e;
@@ -113,10 +115,11 @@ public class PulsarTemplate {
                 if (Objects.isNull(producer)){
                     producer = PulsarTemplate.this.client.newProducer(Schema.STRING).topic(finalTopic).create();
                     PulsarTemplate.this.producerCaches.put(finalTopic,producer);
+                    log.info("[Pulsar] Producer实例化成功，topic is {}",finalTopic);
                 }
                 return producer.sendAsync(msg);
             } catch (PulsarClientException e) {
-                log.error("[Pulsar] Producer初始化失败，topic is {}",finalTopic);
+                log.error("[Pulsar] Producer实例化失败，topic is {}",finalTopic);
                 throw e;
             }
         }

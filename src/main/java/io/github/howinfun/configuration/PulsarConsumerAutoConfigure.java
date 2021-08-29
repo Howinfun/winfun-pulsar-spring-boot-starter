@@ -105,7 +105,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                             }
                             consumerBuilder.messageListener(baseMessageListener);
                             Consumer<String> consumer = consumerBuilder.subscribe();
-                            log.info("[Pulsar] 消费者初始化完毕,topic is {},",consumer.getTopic());
+                            log.info("[Pulsar] Consumer初始化完毕,topic is {},",consumer.getTopic());
                         }
                     } catch (PulsarClientException e) {
                         throw new PulsarAutoConfigException("[Pulsar] consumer初始化异常",e);
@@ -113,7 +113,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                 }
             });
         }else {
-            log.warn("[Pulsar] 未发现有消费者");
+            log.warn("[Pulsar] 未发现有Consumer");
         }
     }
 }

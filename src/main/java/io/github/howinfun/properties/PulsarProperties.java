@@ -28,7 +28,19 @@ public class PulsarProperties {
      */
     private String namespace;
     /**
+     * 是否开启TCP不延迟
+     */
+    private Boolean enableTcpNoDelay=true;
+    /**
+     * 操作超时，单位毫秒
+     */
+    private Integer operationTimeout=30;
+    /**
      * 消费者监听线程数
      */
-    private Integer listenerThreads=10;
+    private Integer listenerThreads=1;
+    /**
+     * IO线程数
+     */
+    private Integer ioThreads=1;
 }

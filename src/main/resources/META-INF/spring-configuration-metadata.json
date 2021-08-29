@@ -1,0 +1,46 @@
+{
+  "properties": [
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.serviceUrl",
+      "type": "java.lang.String",
+      "description": "服务地址。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.tenant",
+      "type": "java.lang.String",
+      "description": "租户。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.namespace",
+      "type": "java.lang.String",
+      "description": "命名空间。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.enableTcpNoDelay",
+      "type": "java.lang.Boolean",
+      "description": "是否开启TCP无延迟。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.operationTimeout",
+      "type": "java.lang.Integer",
+      "description": "操作超时时长，单位秒。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.listenerThreads",
+      "type": "java.lang.Integer",
+      "description": "监听消息线程数，默认1。"
+    },
+    {
+      "sourceType": "io.github.howinfun.properties.PulsarProperties",
+      "name": "pulsar.ioThreads",
+      "type": "java.lang.Integer",
+      "description": "IO线程数，默认1。"
+    }
+  ]
+}
