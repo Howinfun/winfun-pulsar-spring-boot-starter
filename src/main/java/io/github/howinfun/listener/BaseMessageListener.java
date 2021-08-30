@@ -44,20 +44,16 @@ public abstract class BaseMessageListener implements MessageListener<String> {
 
     @Override
     public void received(Consumer<String> consumer, Message<String> msg) {
-        this.executor.execute(()-> {
-            try {
-                this.doReceived(consumer, msg);
-                consumer.acknowledge(msg);
-            } catch (Exception e) {
-                log.error("[Pulsar] consumer消费消息失败",e);
-                consumer.negativeAcknowledge(msg);
-            }
-        });
+        this.executor.execute(()-> this.doReceived(consumer, msg));
     }
 
     /**
      * 消费消息
      * 自定义监听器实现方法
+     * 消息如何响应由开发者决定：
+     *      Consumer#acknowledge
+     *      Consumer#reconsumeLater
+     *      Consumer#negativeAcknowledge
      * @param consumer 消费者
      * @param msg 消息
      */
