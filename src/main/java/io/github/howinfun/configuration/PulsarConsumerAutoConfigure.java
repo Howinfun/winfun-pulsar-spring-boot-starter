@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import io.github.howinfun.ececption.PulsarAutoConfigException;
 import io.github.howinfun.listener.BaseMessageListener;
 import io.github.howinfun.listener.PulsarListener;
+import io.github.howinfun.listener.ThreadPool;
 import io.github.howinfun.properties.PulsarProperties;
 import io.github.howinfun.utils.TopicUtil;
 import java.util.ArrayList;
@@ -59,10 +60,18 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                     try {
                         ConsumerBuilder<String> consumerBuilder = this.pulsarClient.newConsumer(Schema.STRING).receiverQueueSize(pulsarListener.receiverQueueSize());
                         if (pulsarListener.topics().length > 0){
+                            /**
+                             * 初始化线程池
+                             */
+                            if (Boolean.TRUE.equals(baseMessageListener.enableAsync())){
+                                log.info("[Pulsar] 消费者开启异步消费，开始初始化消费线程池....");
+                                ThreadPool threadPool = pulsarListener.threadPool();
+                                baseMessageListener.initThreadPool(threadPool.coreThreads(), threadPool.maxCoreThreads(), threadPool.keepAliveTime(), threadPool.maxQueueLength(), threadPool.threadPoolName());
+                            }
                             List<String> topics = new ArrayList<>(pulsarListener.topics().length);
                             String tenant = StringUtils.isBlank(pulsarListener.tenant())?this.pulsarProperties.getTenant():pulsarListener.tenant();
                             String namespace = StringUtils.isBlank(pulsarListener.namespace())?this.pulsarProperties.getNamespace():pulsarListener.namespace();
-                            Boolean persistent = Objects.nonNull(pulsarListener.persistent())?pulsarListener.persistent():Boolean.TRUE;
+                            Boolean persistent = pulsarListener.persistent();
                             /**
                              * 处理topics
                              */

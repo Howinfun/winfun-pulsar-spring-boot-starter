@@ -1,10 +1,10 @@
 package io.github.howinfun.listener;
 
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import jodd.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Consumer;
@@ -23,28 +23,38 @@ public abstract class BaseMessageListener implements MessageListener<String> {
 
     private Executor executor;
 
-    /**
-     * 初始化consumer线程池->消费消息
-     * 自定义线程池参数 TODO
-     */
-    @PostConstruct
-    private void init(){
-        this.executor = new ThreadPoolExecutor(
-                3,
-                3,
-                60,
-                TimeUnit.MINUTES,
-                new LinkedBlockingDeque<>(100),
-                new ThreadFactoryBuilder().setNameFormat("base-message-listener-execute-%d").get(),
-                // 使用CallerRunsPolicy拒绝策略，让当前线程执行，避免消息丢失
-                new ThreadPoolExecutor.CallerRunsPolicy()
-        );
-        log.info("[Pulsar] consumer线程池初始化成功");
+    /***
+     * 初始化Consumer线程池
+     * @author winfun
+     * @param corePoolSize 核心线程数
+     * @param maximumPoolSize 最大核心线程数
+     * @param keepAliveTime 线程保活时长，单位分钟
+     * @param maxQueueLength 最大等待队列长度
+     * @return {@link Void }
+     **/
+    public void initThreadPool(Integer corePoolSize,Integer maximumPoolSize,Integer keepAliveTime,Integer maxQueueLength,String threadPoolName){
+        if (Objects.isNull(this.executor) && Boolean.TRUE.equals(this.enableAsync())){
+            this.executor = new ThreadPoolExecutor(
+                    corePoolSize,
+                    maximumPoolSize,
+                    keepAliveTime,
+                    TimeUnit.MINUTES,
+                    new LinkedBlockingDeque<>(maxQueueLength),
+                    new ThreadFactoryBuilder().setNameFormat(threadPoolName+"-%d").get(),
+                    // 使用CallerRunsPolicy拒绝策略，让当前线程执行，避免消息丢失
+                    new ThreadPoolExecutor.CallerRunsPolicy()
+            );
+            log.info("[Pulsar] Consumer消费线程池初始化成功！");
+        }
     }
 
     @Override
     public void received(Consumer<String> consumer, Message<String> msg) {
-        this.executor.execute(()-> this.doReceived(consumer, msg));
+        if (Objects.nonNull(this.executor) && Boolean.TRUE.equals(this.enableAsync())) {
+            this.executor.execute(() -> this.doReceived(consumer, msg));
+        }else {
+            this.doReceived(consumer,msg);
+        }
     }
 
     /**
@@ -58,4 +68,12 @@ public abstract class BaseMessageListener implements MessageListener<String> {
      * @param msg 消息
      */
     protected abstract void doReceived(Consumer<String> consumer, Message<String> msg);
+
+    /***
+     * 是否开启异步消费
+     * @return {@link Boolean }
+     **/
+    public Boolean enableAsync(){
+        return Boolean.TRUE;
+    }
 }

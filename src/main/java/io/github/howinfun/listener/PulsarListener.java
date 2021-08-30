@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 自定义注解
- * 初始化consumer的配置参数
+ * 初始化Consumer的配置参数
  * @author winfun
  **/
 @Retention(RetentionPolicy.RUNTIME)
@@ -89,4 +89,8 @@ public @interface PulsarListener {
      */
     String deadLetterTopic() default "";
 
+    /**
+     * 消费线程池
+     */
+    ThreadPool threadPool() default @ThreadPool;
 }

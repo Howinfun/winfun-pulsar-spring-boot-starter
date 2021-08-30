@@ -94,7 +94,7 @@ public class PulsarTemplate {
         public MessageId send(String msg) throws Exception{
             try {
                 MessageId messageId = this.sendAsync(msg).get();
-                log.info("[Pulsar] Producer同步发送消息失败，msg is {}",msg);
+                log.info("[Pulsar] Producer同步发送消息成功，msg is {}",msg);
                 return messageId;
             } catch (InterruptedException | ExecutionException e) {
                 log.error("[Pulsar] Producer同步发送消息失败，msg is {}",msg);
