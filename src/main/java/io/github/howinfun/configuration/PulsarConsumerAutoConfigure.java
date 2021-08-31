@@ -37,7 +37,13 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
      */
     @Autowired(required = false)
     private List<BaseMessageListener> listeners;
+    /**
+     * Pulsar客户端
+     */
     private final PulsarClient pulsarClient;
+    /**
+     * Pulsar自定义配置
+     */
     private final PulsarProperties pulsarProperties;
 
     public PulsarConsumerAutoConfigure(PulsarClient pulsarClient, PulsarProperties pulsarProperties){
@@ -103,7 +109,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                             }else {
                                 if (StringUtils.isNotBlank(pulsarListener.deadLetterTopic())){
                                     if (SubscriptionType.Exclusive.equals(pulsarListener.subscriptionType())){
-                                        throw new PulsarAutoConfigException("消费端仅支持在Shared/Key_Shared模式下单独使用死信队列");
+                                        throw new PulsarAutoConfigException("[Pulsar] 消费端仅支持在Shared/Key_Shared模式下单独使用死信队列");
                                     }
                                     DeadLetterPolicy deadLetterPolicy = DeadLetterPolicy.builder()
                                             .maxRedeliverCount(pulsarListener.maxRedeliverCount())

@@ -50,9 +50,15 @@ public abstract class BaseMessageListener implements MessageListener<String> {
 
     @Override
     public void received(Consumer<String> consumer, Message<String> msg) {
+        /**
+         * 线程池异步执行
+         */
         if (Objects.nonNull(this.executor) && Boolean.TRUE.equals(this.enableAsync())) {
             this.executor.execute(() -> this.doReceived(consumer, msg));
         }else {
+            /**
+             * 当前线程同步执行
+             */
             this.doReceived(consumer,msg);
         }
     }
@@ -70,7 +76,7 @@ public abstract class BaseMessageListener implements MessageListener<String> {
     protected abstract void doReceived(Consumer<String> consumer, Message<String> msg);
 
     /***
-     * 是否开启异步消费
+     * 是否开启异步消费，默认开启
      * @return {@link Boolean }
      **/
     public Boolean enableAsync(){

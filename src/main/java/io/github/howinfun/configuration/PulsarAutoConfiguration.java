@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("io.github.howinfun")
 @ConditionalOnExpression("!'${pulsar.serviceUrl}'.isEmpty()")
 @EnableConfigurationProperties({PulsarProperties.class})
-public class PulsarAutoConfiguration implements DisposableBean {
+public class PulsarAutoConfiguration {
 
     /**
      * 注入Pulsar客户端
@@ -69,13 +68,5 @@ public class PulsarAutoConfiguration implements DisposableBean {
     @Bean
     public PulsarConsumerAutoConfigure pulsarConsumerAutoConfigure(PulsarClient pulsarClient, PulsarProperties pulsarProperties){
         return new PulsarConsumerAutoConfigure(pulsarClient,pulsarProperties);
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        /**
-         * 销毁客户端
-         */
-
     }
 }

@@ -15,7 +15,6 @@ public @interface ThreadPool {
 
     /**
      * 线程名称
-     * @return
      */
     String threadPoolName() default "base-message-listener-execute";
     /**

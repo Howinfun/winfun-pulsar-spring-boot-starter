@@ -27,7 +27,13 @@ public class PulsarTemplate {
      * key：topic，value：producer
      */
     private final ConcurrentHashMap<String,Producer<String>> producerCaches = new ConcurrentHashMap<>(64);
+    /**
+     * Pulsar客户端
+     */
     private final PulsarClient client;
+    /**
+     * Pulsar自定义配置
+     */
     private final PulsarProperties properties;
 
     public PulsarTemplate(PulsarClient client,PulsarProperties pulsarProperties){

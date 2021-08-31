@@ -6,7 +6,7 @@
 
     <groupId>io.github.howinfun</groupId>
     <artifactId>winfun-pulsar-spring-boot-starter</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <name>winfun-pulsar-spring-boot-starter</name>
     <description>统一封装pulsar</description>
     <url>https://github.com/Howinfun/winfun-pulsar-spring-boot-starter</url>
