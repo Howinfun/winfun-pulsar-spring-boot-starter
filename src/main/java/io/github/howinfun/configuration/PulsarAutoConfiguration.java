@@ -1,12 +1,9 @@
 package io.github.howinfun.configuration;
 
 import io.github.howinfun.client.MultiPulsarClient;
-import io.github.howinfun.ececption.PulsarAutoConfigException;
 import io.github.howinfun.properties.MultiPulsarProperties;
-import io.github.howinfun.properties.PulsarProperties;
 import io.github.howinfun.template.PulsarTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("io.github.howinfun")
 @ConditionalOnExpression("!'${pulsar.serviceUrl}'.isEmpty()")
-@EnableConfigurationProperties({PulsarProperties.class})
+@EnableConfigurationProperties({MultiPulsarProperties.class})
 public class PulsarAutoConfiguration {
 
     /**

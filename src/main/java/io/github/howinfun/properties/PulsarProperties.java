@@ -25,7 +25,7 @@ public class PulsarProperties {
      */
     private Boolean enableTcpNoDelay=true;
     /**
-     * 操作超时，单位毫秒
+     * 操作超时，单位秒
      */
     private Integer operationTimeout=30;
     /**

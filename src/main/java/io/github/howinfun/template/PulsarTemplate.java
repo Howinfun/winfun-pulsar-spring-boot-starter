@@ -3,7 +3,6 @@ package io.github.howinfun.template;
 import io.github.howinfun.client.MultiPulsarClient;
 import io.github.howinfun.ececption.PulsarBusinessException;
 import io.github.howinfun.properties.MultiPulsarProperties;
-import io.github.howinfun.properties.PulsarProperties;
 import io.github.howinfun.utils.TopicUtil;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -32,13 +31,13 @@ public class PulsarTemplate {
     /**
      * 多数据源Pulsar客户端
      */
-    private final MultiPulsarClient multiPulsarClient,;
+    private final MultiPulsarClient multiPulsarClient;
     /**
      * 多数据源Pulsar自定义配置
      */
     private final MultiPulsarProperties multiPulsarProperties;
 
-    public PulsarTemplate(MultiPulsarClient multiPulsarClient,, MultiPulsarProperties multiPulsarProperties){
+    public PulsarTemplate(MultiPulsarClient multiPulsarClient, MultiPulsarProperties multiPulsarProperties){
         this.multiPulsarClient = multiPulsarClient;
         this.multiPulsarProperties = multiPulsarProperties;
     }
@@ -58,6 +57,11 @@ public class PulsarTemplate {
     public class Builder {
 
         /**
+         * 数据源名称
+         * 默认值：{@link MultiPulsarProperties#DEFAULT_SOURCE_NAME}
+         */
+        private String sourceName;
+        /**
          * 是否持久化
          */
         private Boolean persistent;
@@ -73,6 +77,11 @@ public class PulsarTemplate {
          * 主题
          */
         private String topic;
+
+        public Builder sourceName(String sourceName){
+            this.sourceName = sourceName;
+            return this;
+        }
 
         public Builder persistent(Boolean persistent){
             this.persistent = persistent;
@@ -118,15 +127,21 @@ public class PulsarTemplate {
         public CompletableFuture<MessageId> sendAsync(String msg) throws PulsarClientException{
 
             String finalTopic = this.generateTopic();
+            String sourceName = StringUtils.isNotBlank(this.sourceName) ? this.sourceName : MultiPulsarProperties.DEFAULT_SOURCE_NAME;
             try {
                 Producer<String> producer = PulsarTemplate.this.producerCaches.getOrDefault(finalTopic,null);
                 if (Objects.isNull(producer)){
-                    producer = PulsarTemplate.this.client.newProducer(Schema.STRING).topic(finalTopic).create();
+                    PulsarClient client = PulsarTemplate.this.multiPulsarClient.getOrDefault(sourceName,null);
+                    if (Objects.isNull(client)){
+                        log.error("[Pulsar] 数据源对应PulsarClient不存在，sourceName is {}",sourceName);
+                        throw new PulsarBusinessException("[Pulsar] 数据源对应PulsarClient不存在！");
+                    }
+                    producer = client.newProducer(Schema.STRING).topic(finalTopic).create();
                     PulsarTemplate.this.producerCaches.put(finalTopic,producer);
-                    log.info("[Pulsar] Producer实例化成功，topic is {}",finalTopic);
+                    log.info("[Pulsar] Producer实例化成功，sourceName is {}, topic is {}",sourceName,finalTopic);
                 }
                 return producer.sendAsync(msg);
-            } catch (PulsarClientException e) {
+            } catch (Exception e) {
                 log.error("[Pulsar] Producer实例化失败，topic is {}",finalTopic);
                 throw e;
             }
@@ -138,10 +153,15 @@ public class PulsarTemplate {
          */
         private String generateTopic(){
             if (StringUtils.isBlank(this.topic)){
-                throw new PulsarBusinessException("topic不能为空");
+                log.error("[Pulsar] Topic 为空，无法发送消息, topic is {}",this.topic);
+                throw new PulsarBusinessException("Topic不能为空");
             }
-            String finalTenant = StringUtils.isNotBlank(this.tenant)?this.tenant:PulsarTemplate.this.properties.getTenant();
-            String finalNamespace = StringUtils.isNotBlank(this.namespace)?this.namespace:PulsarTemplate.this.properties.getNamespace();
+            String finalTenant = StringUtils.isNotBlank(this.tenant)?this.tenant:PulsarTemplate.this.multiPulsarProperties.getTenantBySourceName(this.sourceName);
+            String finalNamespace = StringUtils.isNotBlank(this.namespace)?this.namespace:PulsarTemplate.this.multiPulsarProperties.getNamespaceBySourceName(this.sourceName);
+            if (StringUtils.isBlank(finalTenant) || StringUtils.isBlank(finalNamespace)){
+                log.error("[Pulsar] 租户||命名空间为空，无法创建发送消息, tenant is {}, namespace is {}",finalTenant,finalNamespace);
+                throw new PulsarBusinessException("租户||命名空间为空，无法发送消息");
+            }
             Boolean finalPersistent = Objects.nonNull(this.persistent)?this.persistent:Boolean.TRUE;
             return TopicUtil.generateTopic(finalPersistent, finalTenant, finalNamespace, this.topic);
         }
