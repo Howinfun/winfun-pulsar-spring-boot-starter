@@ -1,6 +1,7 @@
 package io.github.howinfun.configuration;
 
 import io.github.howinfun.ececption.PulsarAutoConfigException;
+import io.github.howinfun.properties.MultiPulsarProperties;
 import io.github.howinfun.properties.PulsarProperties;
 import io.github.howinfun.template.PulsarTemplate;
 import java.util.concurrent.TimeUnit;
@@ -53,20 +54,22 @@ public class PulsarAutoConfiguration {
     /**
      * 注入Pulsar Producer模版类
      * @param pulsarClient pulsar客户端
-     * @param pulsarProperties pulsar自定义配置
+     * @param multiPulsarProperties pulsar自定义配置
      * @return 模版类
      */
     @Bean
-    public PulsarTemplate pulsarTemplate(PulsarClient pulsarClient, PulsarProperties pulsarProperties){
-        return new PulsarTemplate(pulsarClient,pulsarProperties);
+    public PulsarTemplate pulsarTemplate(PulsarClient pulsarClient, MultiPulsarProperties multiPulsarProperties){
+        return new PulsarTemplate(pulsarClient,multiPulsarProperties);
     }
 
-    /**
-     * consumer 自动化配置
-     * @return PulsarConsumerAutoConfigure
-     */
+    /***
+     * 注入Pulsar Consumer自动配置类
+     * @param pulsarClient pulsarClient
+     * @param multiPulsarProperties multiPulsarProperties
+     * @return Pulsar Consumer 自动配置类
+     **/
     @Bean
-    public PulsarConsumerAutoConfigure pulsarConsumerAutoConfigure(PulsarClient pulsarClient, PulsarProperties pulsarProperties){
-        return new PulsarConsumerAutoConfigure(pulsarClient,pulsarProperties);
+    public PulsarConsumerAutoConfigure pulsarConsumerAutoConfigure(PulsarClient pulsarClient, MultiPulsarProperties multiPulsarProperties){
+        return new PulsarConsumerAutoConfigure(pulsarClient,multiPulsarProperties);
     }
 }

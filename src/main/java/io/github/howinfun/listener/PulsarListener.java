@@ -1,5 +1,6 @@
 package io.github.howinfun.listener;
 
+import io.github.howinfun.properties.MultiPulsarProperties;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -22,6 +23,10 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface PulsarListener {
 
+    /**
+     * 数据源名称，默认："default"
+     */
+    String sourceName() default MultiPulsarProperties.DEFAULT_SOURCE_NAME;
     /**
      * 是否持久化
      */

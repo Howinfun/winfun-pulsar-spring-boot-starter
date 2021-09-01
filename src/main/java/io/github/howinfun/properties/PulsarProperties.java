@@ -1,18 +1,11 @@
 package io.github.howinfun.properties;
 
-import lombok.Data;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 /**
  * Pulsar配置类
  * @author winfun
+ * @deprecated 支持多数据源注入
  **/
-@Data
-@Component
-@ConfigurationProperties(prefix = "pulsar")
-@ConditionalOnExpression("!'${pulsar.serviceUrl}'.isEmpty()")
+@Deprecated
 public class PulsarProperties {
 
     /**

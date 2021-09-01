@@ -5,7 +5,7 @@ import io.github.howinfun.ececption.PulsarAutoConfigException;
 import io.github.howinfun.listener.BaseMessageListener;
 import io.github.howinfun.listener.PulsarListener;
 import io.github.howinfun.listener.ThreadPool;
-import io.github.howinfun.properties.PulsarProperties;
+import io.github.howinfun.properties.MultiPulsarProperties;
 import io.github.howinfun.utils.TopicUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +44,11 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
     /**
      * Pulsar自定义配置
      */
-    private final PulsarProperties pulsarProperties;
+    private final MultiPulsarProperties multiPulsarProperties;
 
-    public PulsarConsumerAutoConfigure(PulsarClient pulsarClient, PulsarProperties pulsarProperties){
+    public PulsarConsumerAutoConfigure(PulsarClient pulsarClient, MultiPulsarProperties multiPulsarProperties){
         this.pulsarClient = pulsarClient;
-        this.pulsarProperties = pulsarProperties;
+        this.multiPulsarProperties = multiPulsarProperties;
     }
 
     /**
@@ -59,7 +59,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (!CollectionUtils.isEmpty(this.listeners)){
-            this.listeners.forEach(baseMessageListener -> {
+            for (BaseMessageListener baseMessageListener : this.listeners) {
                 // 获取当前监听器的@PulsarListener信息
                 PulsarListener pulsarListener = AnnotationUtils.findAnnotation(baseMessageListener.getClass(), PulsarListener.class);
                 if (Objects.nonNull(pulsarListener)){
@@ -75,8 +75,13 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                                 baseMessageListener.initThreadPool(threadPool.coreThreads(), threadPool.maxCoreThreads(), threadPool.keepAliveTime(), threadPool.maxQueueLength(), threadPool.threadPoolName());
                             }
                             List<String> topics = new ArrayList<>(pulsarListener.topics().length);
-                            String tenant = StringUtils.isBlank(pulsarListener.tenant())?this.pulsarProperties.getTenant():pulsarListener.tenant();
-                            String namespace = StringUtils.isBlank(pulsarListener.namespace())?this.pulsarProperties.getNamespace():pulsarListener.namespace();
+                            String sourceName = pulsarListener.sourceName();
+                            String tenant = StringUtils.isBlank(pulsarListener.tenant())?this.multiPulsarProperties.getTenant().getOrDefault(sourceName, ""):pulsarListener.tenant();
+                            String namespace = StringUtils.isBlank(pulsarListener.namespace())?this.multiPulsarProperties.getNamespace().getOrDefault(sourceName,""):pulsarListener.namespace();
+                            if (StringUtils.isBlank(tenant) || StringUtils.isBlank(namespace)){
+                                log.error("[Pulsar] 消费者初始化失败，subscriptionName is {},sourceName is {},tenant is {},namespace is {}",pulsarListener.subscriptionName(),sourceName,tenant,namespace);
+                                continue;
+                            }
                             Boolean persistent = pulsarListener.persistent();
                             /**
                              * 处理topics
@@ -126,7 +131,7 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
                         throw new PulsarAutoConfigException("[Pulsar] consumer初始化异常",e);
                     }
                 }
-            });
+            }
         }else {
             log.warn("[Pulsar] 未发现有Consumer");
         }
