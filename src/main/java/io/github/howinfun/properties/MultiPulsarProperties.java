@@ -49,4 +49,21 @@ public class MultiPulsarProperties {
      * IO线程数
      */
     private Map<String,Integer> ioThreads;
+
+    /**
+     * 是否开启TCP不延迟
+     */
+    private Boolean defaultEnableTcpNoDelay=true;
+    /**
+     * 操作超时，单位毫秒
+     */
+    private Integer defaultOperationTimeout=30;
+    /**
+     * 消费者监听线程数
+     */
+    private Integer defaultListenerThreads=1;
+    /**
+     * IO线程数
+     */
+    private Integer defaultIoThreads=1;
 }

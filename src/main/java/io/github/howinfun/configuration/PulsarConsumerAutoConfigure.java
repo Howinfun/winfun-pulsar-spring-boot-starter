@@ -1,6 +1,7 @@
 package io.github.howinfun.configuration;
 
 import cn.hutool.core.util.RandomUtil;
+import io.github.howinfun.client.MultiPulsarClient;
 import io.github.howinfun.ececption.PulsarAutoConfigException;
 import io.github.howinfun.listener.BaseMessageListener;
 import io.github.howinfun.listener.PulsarListener;
@@ -38,16 +39,16 @@ public class PulsarConsumerAutoConfigure implements CommandLineRunner {
     @Autowired(required = false)
     private List<BaseMessageListener> listeners;
     /**
-     * Pulsar客户端
+     * 多数据源Pulsar客户端
      */
-    private final PulsarClient pulsarClient;
+    private final MultiPulsarClient multiPulsarClient, ;
     /**
-     * Pulsar自定义配置
+     * 多数据源Pulsar自定义配置
      */
     private final MultiPulsarProperties multiPulsarProperties;
 
-    public PulsarConsumerAutoConfigure(PulsarClient pulsarClient, MultiPulsarProperties multiPulsarProperties){
-        this.pulsarClient = pulsarClient;
+    public PulsarConsumerAutoConfigure(MultiPulsarClient multiPulsarClient, MultiPulsarProperties multiPulsarProperties){
+        this.multiPulsarClient = multiPulsarClient;
         this.multiPulsarProperties = multiPulsarProperties;
     }
 

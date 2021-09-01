@@ -1,6 +1,8 @@
 package io.github.howinfun.template;
 
+import io.github.howinfun.client.MultiPulsarClient;
 import io.github.howinfun.ececption.PulsarBusinessException;
+import io.github.howinfun.properties.MultiPulsarProperties;
 import io.github.howinfun.properties.PulsarProperties;
 import io.github.howinfun.utils.TopicUtil;
 import java.util.Objects;
@@ -28,17 +30,17 @@ public class PulsarTemplate {
      */
     private final ConcurrentHashMap<String,Producer<String>> producerCaches = new ConcurrentHashMap<>(64);
     /**
-     * Pulsar客户端
+     * 多数据源Pulsar客户端
      */
-    private final PulsarClient client;
+    private final MultiPulsarClient multiPulsarClient,;
     /**
-     * Pulsar自定义配置
+     * 多数据源Pulsar自定义配置
      */
-    private final PulsarProperties properties;
+    private final MultiPulsarProperties multiPulsarProperties;
 
-    public PulsarTemplate(PulsarClient client,PulsarProperties pulsarProperties){
-        this.client = client;
-        this.properties = pulsarProperties;
+    public PulsarTemplate(MultiPulsarClient multiPulsarClient,, MultiPulsarProperties multiPulsarProperties){
+        this.multiPulsarClient = multiPulsarClient;
+        this.multiPulsarProperties = multiPulsarProperties;
     }
 
     /**
